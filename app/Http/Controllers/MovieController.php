@@ -100,5 +100,10 @@ class MovieController extends Controller
     $categories = Category::all();
     return view('create_movie', compact('categories')); // ✅ BENAR
 }
+    public function datamovie()
+    {
+        $movies = Movie::latest()->paginate(6);
+        return view('datamovie',compact('movies'));
+    }
 
 }

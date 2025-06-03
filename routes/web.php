@@ -15,3 +15,5 @@ Route::get('/login', [AuthController::class, 'loginform'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
 
 Route::post('/logout', [AuthController::class, 'logout'])-> name('logout');
+
+Route::get('/data-movie', [MovieController::class, 'datamovie']) ->middleware('auth');
