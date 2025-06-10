@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\MovieController;
+use App\Http\Middleware\RoleAdmin;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [MovieController::class, 'homepage']);
@@ -16,4 +17,7 @@ Route::post('/login', [AuthController::class, 'login']);
 
 Route::post('/logout', [AuthController::class, 'logout'])-> name('logout');
 
-Route::get('/data-movie', [MovieController::class, 'datamovie']) ->middleware('auth');
+Route::get('/data-movie', [MovieController::class, 'datamovie']) ->middleware('auth')->name('datamovie');
+
+Route::get('/editmovie/{id}', [MovieController::class, 'edit']) ->middleware('auth', RoleAdmin::class);
+Route::get('/hapusmovie/{id}', [MovieController::class, 'hapus']) ->middleware('auth');

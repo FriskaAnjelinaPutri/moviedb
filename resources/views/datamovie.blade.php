@@ -29,10 +29,15 @@
       <td>{{ $movie->year }}</td>
       <td>
         <a href="/movie/{{$movie->id}}/{{$movie->slug}}" class="btn btn-warning btn-sm">Detail</a>
-        <a href="" class="btn btn-info btn-sm">Edit</a>
-        {{-- @can('admin') --}}
-            <a href="" class="btn btn-danger btn-sm">Hapus</a>
-        {{-- @endcan --}}
+        <a href="/editmovie/{{$movie->id}}" class="btn btn-info btn-sm">Edit</a>
+        @can('delete')
+            <form action="/deletemovie/{{$movie->id}}" method="post">
+            @csrf
+            <button type="submit" class="btn btn-sm btn-danger" title="hapus" data-bs-toggle="tooltip" onclick="return confirm(are you sure?)">
+            Delete
+            </button>
+            </form>
+        @endcan
 
       </td>
 

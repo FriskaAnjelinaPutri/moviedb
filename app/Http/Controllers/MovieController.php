@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\Movie;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Str;
 
 
@@ -64,7 +65,7 @@ class MovieController extends Controller
     public function edit(Movie $movie)
     {
         $categories = Category::all();
-        return view('movies.edit', compact('movie', 'categories'));
+        return view('editmovie', compact('movie', 'categories'));
     }
 
     public function update(Request $request, Movie $movie)
@@ -86,13 +87,16 @@ class MovieController extends Controller
 
         $movie->update($validated);
 
-        return redirect()->route('movies.index')->with('success', 'Movie updated successfully.');
+        return redirect()->route('datamovie')->with('success', 'Movie updated successfully.');
     }
 
-    public function destroy(Movie $movie)
+    public function delete(Movie $movie)
     {
+        if(Gate::allows('delete')){
         $movie->delete();
-        return redirect()->route('movies.index')->with('success', 'Movie deleted successfully.');
+        return redirect()->route('datamovie')->with('success', 'Movie deleted successfully.');
+        }
+        abort(403);
     }
 
     public function create()
