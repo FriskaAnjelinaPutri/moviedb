@@ -19,5 +19,10 @@ Route::post('/logout', [AuthController::class, 'logout'])-> name('logout');
 
 Route::get('/data-movie', [MovieController::class, 'datamovie']) ->middleware('auth')->name('datamovie');
 
-Route::get('/editmovie/{id}', [MovieController::class, 'edit']) ->middleware('auth', RoleAdmin::class);
-Route::get('/hapusmovie/{id}', [MovieController::class, 'hapus']) ->middleware('auth');
+Route::get('/editmovie/{id}', [MovieController::class, 'edit'])->middleware('auth', RoleAdmin::class);
+Route::delete('/hapusmovie/{movie}', [MovieController::class, 'delete'])
+     ->middleware('auth')
+     ->name('movie.destroy');
+
+Route::put('/movie/{id}', [MovieController::class, 'update'])->name('movie.update') ->middleware('auth', RoleAdmin::class);
+

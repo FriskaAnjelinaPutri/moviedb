@@ -62,21 +62,25 @@ class MovieController extends Controller
         return view('movies.show', compact('movie'));
     }
 
-    public function edit(Movie $movie)
+    public function edit($id)
     {
+        $movie = Movie::findOrFail($id);
         $categories = Category::all();
         return view('editmovie', compact('movie', 'categories'));
     }
 
-    public function update(Request $request, Movie $movie)
+
+    public function update(Request $request, $id)
     {
+        $movie = Movie::findOrFail($id);
+
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'synopsis' => 'nullable|string',
             'category_id' => 'required|exists:categories,id',
             'year' => 'required|integer|min:1900|max:' . date('Y'),
             'actors' => 'nullable|string',
-            'cover_image' => 'nullable|image|max:2048',
+            'cover_image' => 'nullable|image|mimes:jpg,jpeg,webp|max:2048',
         ]);
 
         $validated['slug'] = Str::slug($validated['title']);
@@ -90,14 +94,19 @@ class MovieController extends Controller
         return redirect()->route('datamovie')->with('success', 'Movie updated successfully.');
     }
 
-    public function delete(Movie $movie)
+
+    public function delete($id)
     {
-        if(Gate::allows('delete')){
+        $movie = Movie::findOrFail($id);
+
+        Gate::authorize('delete');
+
         $movie->delete();
-        return redirect()->route('datamovie')->with('success', 'Movie deleted successfully.');
-        }
-        abort(403);
+
+        return redirect()->route('datamovie')
+                        ->with('success', 'Movie deleted successfully.');
     }
+
 
     public function create()
 {

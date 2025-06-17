@@ -30,14 +30,11 @@
       <td>
         <a href="/movie/{{$movie->id}}/{{$movie->slug}}" class="btn btn-warning btn-sm">Detail</a>
         <a href="/editmovie/{{$movie->id}}" class="btn btn-info btn-sm">Edit</a>
-        @can('delete')
-            <form action="/deletemovie/{{$movie->id}}" method="post">
+        <form action="{{ route('movie.destroy', $movie->id) }}" method="POST" style="display:inline-block;">
             @csrf
-            <button type="submit" class="btn btn-sm btn-danger" title="hapus" data-bs-toggle="tooltip" onclick="return confirm(are you sure?)">
-            Delete
-            </button>
-            </form>
-        @endcan
+            @method('DELETE')
+            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Yakin hapus data ini?')">Hapus</button>
+        </form>
 
       </td>
 
